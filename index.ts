@@ -64,3 +64,39 @@ class FSRAnimator {
         }
     }
 }
+
+class FourSidedRing {
+    private state : FSRState = new FSRState()
+    draw(context : CanvasRenderingContext2D) {
+        const r : number = 0.1 * size
+        const l : number = size * 0.9 * this.state.scales[1]
+        context.fillStyle = '#2ecc71'
+        context.save()
+        context.translate(size/2, size/2)
+        for (var i = 0; i < 4; i++) {
+            context.save()
+            context.rotate(i * Math.PI/2)
+            context.translate(l, l)
+            context.beginPath()
+            for (var j = 0; j < 360 * this.state.scales[0]; j++) {
+                const x : number = r * Math.cos(j * Math.PI/180)
+                const y : number = r * Math.sin(j * Math.PI/180)
+                if (j == 0) {
+                    context.moveTo(x, y)
+                }
+                else {
+                    context.lineTo(x, y)
+                }
+            }
+            context.stroke()
+            context.restore()
+        }
+        context.restore()
+    }
+    update(stopcb : Function) {
+        this.state.update(stopcb)
+    }
+    startUpdating(startcb : Function) {
+        this.state.startUpdating(startcb)
+    }
+}
