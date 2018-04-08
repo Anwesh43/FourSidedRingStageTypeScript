@@ -82,17 +82,17 @@ class FourSidedRing {
     private state : FSRState = new FSRState()
     draw(context : CanvasRenderingContext2D) {
         const r : number = 0.1 * size
-        const l : number = (size) * 0.45 * this.state.scales[1]
+        const l : number = (size) * 0.6 * this.state.scales[1]
         context.strokeStyle = '#2ecc71'
         context.lineWidth = r/(5.5)
         context.save()
         context.translate(size/2, size/2)
-        for (var i = 0; i < 4; i++) {
+        for (var i = 0; i < 1 + 3 * Math.floor(this.state.scales[0]); i++) {
             context.save()
             context.rotate(i * Math.PI/2)
             context.translate(l, l)
             context.beginPath()
-            for (var j = 0; j < 360 * this.state.scales[0]; j++) {
+            for (var j = 0; j < 365 * this.state.scales[0]; j++) {
                 const x : number = r * Math.cos(j * Math.PI/180)
                 const y : number = r * Math.sin(j * Math.PI/180)
                 if (j == 0) {
