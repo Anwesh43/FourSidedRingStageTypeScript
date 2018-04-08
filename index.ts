@@ -3,7 +3,9 @@ const h : number = window.innerHeight
 const size : number = Math.min(w,h) * 0.8
 class FourSidedRingStage {
     private canvas : HTMLCanvasElement = document.createElement('canvas')
-    private context : CanvasRenderingContext2D;
+    private fsr : FourSidedRing = new FourSidedRing()
+    private animator : FSRAnimator = new FSRAnimator()
+    private context : CanvasRenderingContext2D
     constructor() {
         this.initCanvas()
     }
@@ -16,10 +18,18 @@ class FourSidedRingStage {
     render() {
         this.context.fillStyle = '#212121'
         this.context.fillRect(0, 0, size, size)
+        this.fsr.draw(this.context)
     }
     handleTap() {
         this.canvas.onmousedown = () => {
-
+            this.fsr.startUpdating(() => {
+                this.animator.start(() => {
+                    this.render()
+                    this.fsr.update(() => {
+                        this.animator.stop()
+                    })
+                })
+            })
         }
     }
 }
