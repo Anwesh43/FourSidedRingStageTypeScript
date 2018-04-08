@@ -24,11 +24,10 @@ class FourSidedRingStage {
     }
 }
 class FSRState {
-    scales : Array<number> = [0, 0]
-    scale : number = 0
-    dir : number = 0
-    prevScale : number = 0
-    j : number = 0
+    public scales : Array<number> = [0, 0]
+    private dir : number = 0
+    private prevScale : number = 0
+    private j : number = 0
     update (stopcb : Function) {
         this.scales[this.j] += 0.1 * this.dir
         if (Math.abs(this.scales[this.j] - this.prevScale) > 1) {
@@ -43,6 +42,25 @@ class FSRState {
         if (this.dir == 0) {
             this.dir = 1 - 2 * this.prevScale
             startcb()
+        }
+    }
+}
+
+class FSRAnimator {
+    private animated : boolean = false
+    private interval : number
+    start (updatecb : Function) {
+        if (!this.animated) {
+            this.animated = true
+            this.interval = window.setInterval(() => {
+                updatecb()
+            }, 50)
+        }
+    }
+    stop () {
+        if (!this.animated) {
+            this.animated = true
+            window.clearInterval(this.interval)
         }
     }
 }
