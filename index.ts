@@ -44,6 +44,9 @@ class FSRState {
             this.scales[this.j] = this.prevScale + this.dir
             this.j += this.dir
             if (this.j == this.scales.length || this.j == -1) {
+                this.j -= this.dir
+                this.dir = 0
+                this.prevScale = this.scales[this.j]
                 stopcb()
             }
         }
@@ -79,8 +82,9 @@ class FourSidedRing {
     private state : FSRState = new FSRState()
     draw(context : CanvasRenderingContext2D) {
         const r : number = 0.1 * size
-        const l : number = size * 0.9 * this.state.scales[1]
-        context.fillStyle = '#2ecc71'
+        const l : number = (size) * 0.45 * this.state.scales[1]
+        context.strokeStyle = '#2ecc71'
+        context.lineWidth = r/(5.5)
         context.save()
         context.translate(size/2, size/2)
         for (var i = 0; i < 4; i++) {
@@ -110,3 +114,6 @@ class FourSidedRing {
         this.state.startUpdating(startcb)
     }
 }
+this.fsrs = new FourSidedRingStage()
+this.fsrs.render()
+this.fsrs.handleTap()
